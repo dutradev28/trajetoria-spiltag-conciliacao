@@ -1,8 +1,8 @@
 from src.components.loginComponents.create_webdriver import CreateWebdriver
-from src.components.loginComponents import LoginBradesco
-from src.components.loginComponents import LoginSofisa
-from src.components.loginComponents import LoginPagBank
-from src.components.loginComponents import LoginBB
+from src.components.loginComponents.login_bradesco import LoginBradesco
+from src.components.loginComponents.login_sofisa import LoginSofisa
+from src.components.loginComponents.login_pagbank import LoginPagBank
+from src.components.loginComponents.login_bb import LoginBB
 
 
 def main():
