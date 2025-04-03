@@ -3,6 +3,7 @@ from src.components.loginComponents.login_bradesco import LoginBradesco
 from src.components.loginComponents.login_sofisa import LoginSofisa
 from src.components.loginComponents.login_pagbank import LoginPagBank
 from src.components.loginComponents.login_bb import LoginBB
+from src.components.extractComponents.extract_bradesco import ExtractBradesco
 
 
 def main():
@@ -12,14 +13,18 @@ def main():
         login_bradesco = LoginBradesco()
         login_sofisa = LoginSofisa()
         login_pagbank = LoginPagBank()
+        extract_bradesco = ExtractBradesco()
         
         driver = webdriver.create_driver()
         print("Chrome iniciado com sucesso")
         
-        login_bb.login_bb(driver)
+        #login_bb.login_bb(driver)
         login_bradesco.login_bradesco(driver)
-        login_sofisa.login_sofisa_matriz(driver)
-        login_pagbank.login_pagbank(driver)
+        #login_sofisa.login_sofisa_matriz(driver)
+        #login_pagbank.login_pagbank(driver)
+        
+        extract_bradesco.extract_bradesco(driver)
+        
         
         print("Login realizado com sucesso!")
         
