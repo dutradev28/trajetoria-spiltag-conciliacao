@@ -25,7 +25,7 @@ class CreateWebdriver:
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--enable-unsafe-swiftshader")
             chrome_options.add_argument("--disable-dev-shm-usage")            
-            chrome_options.add_argument("--log-level=3")            
+            chrome_options.add_argument("--log-level=3")                      
             chrome_options.add_experimental_option("useAutomationExtension", False)
             chrome_options.add_extension(self.PATH_EXTENSION)
             chrome_options.add_argument(f"--user-data-dir={self.USER_DATA_DIR}")          
