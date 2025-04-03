@@ -2,8 +2,11 @@ from dotenv import load_dotenv
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from datetime import datetime
 import os
 import time
+import shutil
+
 
 class ExtractBradesco:
     
@@ -80,6 +83,61 @@ class ExtractBradesco:
             pdf.click()
             driver.switch_to.default_content()
             time.sleep(3)
+            downloaded_file = self.move_and_rename_bradesco_file()
+        
+            print(f"Extrato processado: {downloaded_file}")
             
         except Exception as e:
             raise Exception(f"Erro ao baixar extrato bancario bradesco: {e}")
+        
+    def move_and_rename_bradesco_file(self):
+    
+        try:
+            download_dir = os.path.expanduser("~/Downloads")  
+            output_dir = os.path.join("src", "outputs")
+        
+            os.makedirs(output_dir, exist_ok=True)
+            
+            file_pattern = "Bradesco_"
+            
+            matching_files = [f for f in os.listdir(download_dir) 
+                            if f.startswith(file_pattern) and f.lower().endswith('.pdf')]
+            
+            if not matching_files:
+                raise FileNotFoundError("Nenhum arquivo do Bradesco encontrado na pasta de downloads")
+        
+            matching_files.sort(key=lambda f: os.path.getmtime(os.path.join(download_dir, f)), 
+                            reverse=True)
+            
+            latest_file = matching_files[0]
+            original_path = os.path.join(download_dir, latest_file)
+        
+            file_size = -1
+            while True:
+                try:
+                    current_size = os.path.getsize(original_path)
+                    if current_size == file_size:
+                        break  
+                    file_size = current_size
+                    time.sleep(1)
+                except OSError:
+                    time.sleep(1)
+                    continue
+            
+            current_month_year = datetime.now().strftime("%m%Y")
+            new_filename = f"BRADESCO_{current_month_year}.pdf"
+            new_path = os.path.join(output_dir, new_filename)
+            
+            counter = 1
+            while os.path.exists(new_path):
+                new_filename = f"BRADESCO_{current_month_year}_{counter}.pdf"
+                new_path = os.path.join(output_dir, new_filename)
+                counter += 1
+            
+            shutil.move(original_path, new_path)
+            
+            print(f"Arquivo movido e renomeado com sucesso: {new_path}")
+            return new_path
+            
+        except Exception as e:
+            raise Exception(f"Erro ao mover/renomear arquivo do Bradesco: {str(e)}")
